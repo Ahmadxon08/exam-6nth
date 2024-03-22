@@ -8,17 +8,21 @@ import axios from "axios";
 import Products from "./Products";
 
 const Home = ({ data }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [searchData, setSearchData] = useState([]);
 
   // fetch data
   const fetchProducts = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get("http://localhost:3000/products");
       setProducts(res.data);
       setSearchData(res.data);
     } catch (error) {
       console.log("Hatolik bor", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -39,53 +43,88 @@ const Home = ({ data }) => {
 
   return (
     <div className="home">
-      <div className="homeHead">
-        <div className="container">
-          <div className="home_links">
-            <h1>Товары</h1>
-            <div className="link">
-              <Link>Главная</Link>
-              <span>/</span>
-              <Link>Товары</Link>
+      {isLoading ? (
+       <div className="loading_content">
+         <div className="loadingio-spinner-spin-cdoma8r7xbp">
+          <div className="ldio-5gvrc5xa85c">
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
+            </div>
+            <div>
+              <div></div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="homeBody">
-        <div className="container">
-          <div className="homeContent">
-            <div className="contentHead">
-              <h1>Все товары {products.length}</h1>
-              <div className="search">
-                <img src={search} alt="you can search" />
-                <input
-                  type="search"
-                  placeholder="Поиск"
-                  onChange={handleSearchData}
-                />
-              </div>
-            </div>
-            <div className="contentBody">
-              <div className="table_head">
-                <span>Наименование</span>
-                <span>Артикул</span>
-                <span>Бренд</span>
-                <span>Цена</span>
-                <span>Цена со скидкой</span>
-                <span>Настойки</span>{" "}
-              </div>
-              <div className="line"></div>
-              <div className="table_body">
-                <Products products={products} data={fetchProducts} />
+       </div>
+      ) : (
+        <>
+          <div className="homeHead">
+            <div className="container">
+              <div className="home_links">
+                <h1>Товары</h1>
+                <div className="link">
+                  <Link>Главная</Link>
+                  <span>/</span>
+                  <Link>Товары</Link>
+                </div>
               </div>
             </div>
           </div>
-          <div className="add">
-            <Link to="/goods">+ Новый товар</Link>
-            <h2>© Anymarket 2022</h2>
+          <div className="homeBody">
+            <div className="container">
+              <div className="homeContent">
+                <div className="contentHead">
+                  <h1>Все товары {products.length}</h1>
+                  <div className="search">
+                    <img src={search} alt="you can search" />
+                    <input
+                      type="search"
+                      placeholder="Поиск"
+                      onChange={handleSearchData}
+                    />
+                  </div>
+                </div>
+                <div className="contentBody">
+                  <div className="table_head">
+                    <span>Наименование</span>
+                    <span>Артикул</span>
+                    <span>Бренд</span>
+                    <span>Цена</span>
+                    <span>Цена со скидкой</span>
+                    <span>Настойки</span>{" "}
+                  </div>
+                  <div className="line"></div>
+                  <div className="table_body">
+                    <Products products={products} data={fetchProducts} />
+                  </div>
+                </div>
+              </div>
+              <div className="add">
+                <Link to="/goods">+ Новый товар</Link>
+                <h2>© Anymarket 2022</h2>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
